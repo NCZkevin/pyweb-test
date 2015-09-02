@@ -1,13 +1,16 @@
 from app import app
-from app.modles import Todo
-from flask.ext.script import Manger
+from app.models import Todo
+from flask.ext.script import Manager
 
-manger = Manger(app)
 
-@manger.command
+manager = Manager(app)
+
+
+@manager.command
 def save():
-    todo = Todo(content = "study flask")
+    todo = Todo(content="study flask")
     todo.save()
 
+
 if __name__ == '__main__':
-    manger.run()
+    manager.run()
