@@ -1,0 +1,36 @@
+{%extends "find/find_base.html"%}
+{%block tab%}
+<li class="active">
+	<a href="../corporation/">社团</a>
+</li>
+<li>
+	<a href="../group/">小组</a>
+</li>
+<li>
+	<a href="../topic/">话题</a>
+</li>
+<li>
+	<a href="../activity/">活动</a>
+</li>
+{%endblock%}
+{%block box%}
+<div class="row-fluid">
+	{%if current_user.find_corporation%}
+<ul class="thumbnails">
+	{%for sccard in current_user.find_corporation%}
+	<li class="span4 {%cycle 'removemarginleft' '' ''%}">
+		<div class="span6">
+		<a class="" href="/corporation/{{sccard.corporation.url_number}}/"> <img class="img-polaroid span10" src="{{sccard.corporation.thumbnail}}"></a>
+		</div>
+		<div class="media-body">
+			<h4 class="media-heading">{{sccard.corporation.name}}</h4>
+			<p>{{sccard.corporation.get_user_active.count}}个成员</p>
+		</div>
+	</li>
+	{%endfor%}
+</ul>
+{%else%}
+<h2>没有社团</h2>
+{%endif%}
+</div>
+{%endblock%}

@@ -1,0 +1,145 @@
+{%extends "corporation/corporation_manage.html"%}
+
+{%block manage_button%}
+<a class="pull-right" data-toggle="modal" data-target="#creat_departmentModal" href=""> - 创建部门</a>
+<a class="pull-right" data-toggle="modal" data-target="#delete_departmentModal" href=""> - 删除部门</a>
+{%endblock%}
+
+{%block tab_nav%}
+	<li>
+		<a href="../manage_edit/">资料编辑</a>
+	</li>
+	<li>
+		<a href="../manage_members/">成员管理</a>
+	</li>
+	<li class="active">
+		<a href="../manage_department/">部门管理</a>
+	</li>
+	<li>
+		<a href="../manage_advance/">高级设定</a>
+	</li>
+{%endblock%}
+
+{%block manage_content%}
+<div class="row-fluid">
+	<h4>所有成员:</h4>
+	<ul class="thumbnails">
+	{%for sccard in corporation.get_sccard_active%}
+		{%if not sccard.department%}
+		<li class="span4 {%cycle 'removemarginleft' '' ''%}">
+			<div class="span6">
+				<a href="/people/{{sccard.user.url_number}}/"> <img class="img-polaroid span10" src="{{sccard.user.public_profile.thumbnail}}"></a>
+			</div>
+			<div class="media-body">
+				<h4 class="media-heading">{{sccard.user.public_profile.realname}}</h4>
+				<a class="btn btn-mini" data-toggle="modal" data-target="#myModal_{{sccard.user.url_number}}">移到其他部门</a>
+			</div>
+		</li>
+		{%endif%}
+	{%endfor%}
+	</ul>
+</div>
+{%if corporation.departments%}
+	{%for department in corporation.departments%}
+		<div class="row-fluid">
+			<h4>{{department}}:</h4>
+			<div class="row-fluid">
+				{%if department%}
+					<ul class="thumbnails">
+						{%for sccard in corporation.get_sccard_active%}
+						{%if sccard.department == department%}
+						<li class="span4 {%cycle 'removemarginleft' '' ''%}">
+							<div class="span6">
+								<a href="/people/{{sccard.user.url_number}}/"> <img class="img-polaroid span10" src="{{sccard.user.public_profile.thumbnail}}"></a>
+							</div>
+							<div class="media-body">
+								<h4 class="media-heading">{{sccard.user.public_profile.realname}}</h4>
+								<a class="btn btn-mini" data-toggle="modal" data-target="#myModal_{{sccard.user.url_number}}">移到其他部门</a>
+							</div>
+						</li>
+						{%endif%}
+						{%endfor%}
+					</ul>
+				{%else%}
+					<div class="alert alert-error">
+						<h6>该部门没有成员</h6>
+					</div>
+				{%endif%}
+			</div>
+		</div>
+	{%endfor%}
+{%else%}
+<div class="alert alert-error">
+	<h6>该社团还没有创建部门</h6>
+</div>
+{%endif%}
+{%endblock%}
+
+{%block otherbody%}
+<div id="creat_departmentModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			×
+		</button>
+		<h3 id="myModalLabel">创建部门</h3>
+	</div>
+	<div class="modal-body" style="margin-left: 120px;">
+		<form class="form-inline" method="post">
+			{% csrf_token %}
+			<input type="text" id="id_department_name" name="department_name" placeholder="请输入部门名称"/>
+			<input type="hidden" name="creat_department"/>
+			<button class="btn btn-primary" type="submit">
+				确定
+			</button>
+		</form>
+	</div>
+</div>
+<div id="delete_departmentModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			×
+		</button>
+		<h3 id="myModalLabel">删除部门</h3>
+	</div>
+	<div class="modal-body" style="margin-left: 120px;">
+		<form method="post" class="form-inline">
+			{% csrf_token %}
+			<p>请选择要删除的部门</p>
+			<select name="department_name">
+				{%for department in corporation.departments%}
+					<option>{{department}}</option>
+				{%endfor%}
+			</select>
+			<input type="hidden" name="delete_department"/>
+			<button class="btn btn-primary" type="submit">
+				确定
+			</button>
+		</form>
+	</div>
+</div>
+{%for user in corporation.get_user_active%}
+<div id="myModal_{{user.url_number}}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			×
+		</button>
+		<h3 id="myModalLabel">移动</h3>
+	</div>
+	<div class="modal-body" style="margin-left: 120px;">
+		<form class="form-inline" method="post">
+			{% csrf_token %}
+			<p>请选择要去的部门</p>
+			<select name="department_name">
+				{%for department in corporation.departments%}
+					<option>{{department}}</option>
+				{%endfor%}
+			</select>
+			<input type="hidden" id="id_user_url_number" name="user_url_number" value="{{user.url_number}}"/>
+			<button class="btn btn-primary" type="submit">
+				确定
+			</button>
+		</form>
+	</div>
+</div>
+{%endfor%}
+{%endblock%}

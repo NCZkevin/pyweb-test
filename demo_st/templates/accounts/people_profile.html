@@ -1,0 +1,18 @@
+{%extends "accounts/people.html"%}
+{%block tab%}
+<li>
+	<a href="../feeds/">动态</a>
+</li>
+<li>
+	<a href="../corporation/">社团</a>
+</li>
+<li>
+	<a href="../group/">小组</a>
+</li>
+{%endblock%}
+{%block content%}
+{%if student.public_profile%}
+{%else%}
+<h2>无</h2>
+{%endif%}
+{%endblock%}

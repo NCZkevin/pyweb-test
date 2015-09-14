@@ -1,0 +1,36 @@
+{%extends "sitemail/sitemail_base.html"%}
+{%block title%}写信{%endblock%}
+
+{%block box%}
+<div class="row-fluid">
+<form method="post" class="span8">
+	{% csrf_token %}
+	<div class="row-fluid">
+		<div class="span4">
+			<label for="id_reader">收件人:</label>
+			<input type="text" id="id_reader" name="reader"/>
+		</div>
+		<div class="span7 offset1"><label for="id_title">标题:</label> <input type="text" name="title" id="id_title" class="span12"></div>
+	</div>
+	<p><label for="id_content">内容:</label> <textarea id="id_content" rows="10" cols="40" name="content" class="span12"></textarea></p>
+	<button class="btn btn-primary pull-right" type="submit">发送</button>
+</form>
+<div class="span4">
+	<label for="id_select">选择收件人:</label>
+	<select name="select" id="id_select"  multiple="multiple">
+		{%for user in current_user.get_watchpeople%}
+			<option>{{user.public_profile.realname}}({{user.url_number}})</option>
+		{%endfor%}
+	</select>
+</div>
+</div>
+{%endblock%}
+{%block otherscript%}
+<script type="text/javascript">
+	$("#id_select").change(function(){
+		$("#id_reader").val(function(i,oldval){
+			return oldval + "-" + $("#id_select").find("option:selected").text()
+		});
+	});
+</script>
+{%endblock%}

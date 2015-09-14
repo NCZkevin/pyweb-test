@@ -1,0 +1,90 @@
+{%extends "corporation/corporation.html"%}
+{%block othercss%}
+<link href="{{STATIC_URL}}css/datetimepicker.css" rel="stylesheet" />
+{%endblock%}
+{%block topic_or_activity%}
+	<a class="pull-right" data-toggle="modal" data-target="#myActivityModal" href="">-发布活动</a>
+{%endblock%}
+
+{%block tab%}
+<li>
+	<a href="../structure/">社团结构</a>
+</li>
+{%if current_user in corporation.get_user_active%}
+<li>
+	<a href="../topics/">社内论坛</a>
+</li>
+{%endif%}
+<li class="active">
+	<a href="../activity/">社团活动</a>
+</li>
+
+{%endblock%}
+
+{%block content%}
+	{%if corporation.get_activity_active%}
+	<div class="media row-fluid">
+		{%for activity in corporation.get_activity_active reversed%}
+		<div class="media">
+			<div class="span2">
+				<div class="span8">
+					<a class="pull-left" href="/corporation/{{corporation.url_number}}/"><img class="img-polaroid" src="{{corporation.logo}}"></a>
+				</div>
+			</div>
+			<div class="broadcast right span10">
+				<div class="arrow"></div>
+				<div>
+					<h3  class="popover-title"><a href="/corporation/{{corporation.url_number}}/activity/{{activity.url_number}}/">{{activity.name}}</a>
+					<span class="muted pull-right">活动时间：<small>{{activity.start_time|date:"Y-m-d H:i:s"}}</small>至<small>{{activity.finish_time|date:"Y-m-d H:i:s"}}</small></span>
+					</h3>
+					<div class="popover-content">
+						<p>{{activity.detail}}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		{%endfor%}
+	</div>
+	{%else%}
+	<div class="alert alert-error">
+		<p>还没有发布活动</p>
+	</div>
+	{%endif%}
+{%endblock%}
+
+{%block otherbody%}
+<div id="myActivityModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			×
+		</button>
+		<h3 id="myModalLabel">活动</h3>
+	</div>
+	<div class="modal-body" style="
+	margin-left: 120px;">
+	<form class="span3" method="post">
+					{% csrf_token %}
+			<p><label for="id_name">活动名称:</label> <input type="text" name="name" id="id_name"></p>
+<label for="id_start_time">开始时间:</label><input type="text" name="start_time" id="id_start_time">
+<label for="id_finish_time">结束时间:</label><input type="text" name="finish_time" id="id_finish_time">
+<p><label for="id_place">活动地点:</label> <input type="text" name="place" id="id_place"></p>
+<p><label for="id_max_student">人数上限:</label> <input type="text" name="max_student" id="id_max_student"></p>
+<p><label for="id_pay">人均消费:</label> <input type="text" name="pay" id="id_pay"></p>
+<p><label for="id_detail">补充细节:</label> <textarea id="id_detail" rows="10" cols="40" name="detail"></textarea></p>
+			<button class="btn btn-primary" type="submit">
+				发布
+			</button>
+		</form>
+		<div class="bootstrap-timepicker pull-right">
+            <input id="timepicker3" type="text" class="input-small">
+        </div>
+	</div>
+</div>
+{%endblock%}
+{%block otherscript%}
+<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+            $('#id_start_time').datetimepicker();
+            $('#id_finish_time').datetimepicker();
+        </script>
+{%endblock%}

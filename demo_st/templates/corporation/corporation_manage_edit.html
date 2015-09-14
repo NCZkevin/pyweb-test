@@ -1,0 +1,92 @@
+{%extends "corporation/corporation_manage.html"%}
+{%block othercss%}
+<link href="{{STATIC_URL}}css/bootstrap-fileupload.css" rel="stylesheet"/>
+{%endblock%}
+{%block tab_nav%}
+	<li class="active">
+		<a href="../manage_edit/">资料编辑</a>
+	</li>
+	<li>
+		<a href="../manage_members/">成员管理</a>
+	</li>
+	<li>
+		<a href="../manage_department/">部门管理</a>
+	</li>
+	<li>
+		<a href="../manage_advance/">高级设定</a>
+	</li>
+{%endblock%}
+
+{%block manage_content%}
+<div class="row-fluid">
+	<form class="form-horizontal" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="row-fluid">
+			<div class="span6">
+				<div class="fileupload fileupload-new" data-provides="fileupload">
+					
+					
+					<div class="row-fluid">
+						<div class="fileupload-preview thumbnail span11"  style="height: 288px"></div>
+						<div class="btn btn-file">
+							<div class="fileupload-new">选择社团Logo</div>
+							<div class="fileupload-exists">换一张</div>
+							<input type="file"name="logo" id="id_logo"/>
+						</div>
+						<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">删除</a>
+					</div>
+				</div>
+			</div>
+			<div class="span6">
+				<div class="control-group row-fluid">
+					<div  class="span3 offset1">
+						<label for="id_name" style="color: green">社团名称:</label>
+					</div>
+					<div class="span8">
+						<input type="text" id="id_name" class="span12" name="name" value="{{corporation.name}}"/>
+					</div>
+				</div>
+				
+				<div class="control-group row-fluid">
+					<div class="span3 offset1">
+						<label for="id_birthyear" style="color: green">诞生年份:</label>
+					</div>
+					<div class="span8">
+						<input type="text" id="id_birthyear" class="span12" name="birthyear" value="{{corporation.birthyear}}"/>
+					</div>
+				</div>
+				
+				<div class="control-group row-fluid">
+					<div class="span3 offset1">
+					<label for="id_school" style="color: green">学校:</label>
+					</div>
+					<div class="span8">
+						<input type="text" id="id_school" class="span12" name="school" value="{{corporation.school}}"/>
+					</div>
+				</div>
+
+				<div class="control-group row-fluid">
+					<div class="span3 offset1">
+						<label for="id_introduction" style="color: green">社团简介:</label>
+					</div>
+					<div class="span8">
+						<textarea type="text" id="id_introduction" name="introduction" class="span12">{{corporation.introduction}}</textarea>
+					</div>
+				</div>
+				
+				
+				<div class="control-group row-fluid">
+					<div class="span8 offset4">
+						<button class="btn btn-success span12" type="submit">
+							保存
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+{%endblock%}
+{%block otherscript%}
+<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap-fileupload.js"></script>
+{%endblock%}

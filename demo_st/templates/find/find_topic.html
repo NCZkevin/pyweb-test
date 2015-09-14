@@ -1,0 +1,44 @@
+{%extends "find/find_base.html"%}
+{%block tab%}
+<li>
+	<a href="../corporation/">社团</a>
+</li>
+<li>
+	<a href="../group/">小组</a>
+</li>
+<li class="active">
+	<a href="../topic/">小组话题</a>
+</li>
+<li>
+	<a href="../activity/">活动</a>
+</li>
+{%endblock%}
+{%block box%}
+<div class="row-fluid">
+	{%if current_user.find_topic.all%}
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<td>话题</td>
+					<td>回应/阅</td>
+					<td>时间</td>
+					<td>小组</td>
+				</tr>
+			</thead>
+			<tbody>
+				{%for topic in current_user.find_topic%}
+				
+				<tr>
+					<td><a title="{{topic.title}}" href="/group/{{topic.creator.group.url_number}}/topic/{{topic.url_number}}/">{{topic.title}}</a></td>
+					<td>{{topic.get_reply.count}}/{{topic.clicks}}</td>
+					<td><small>{{topic.update_time|date:"Y-m-d H:i:s"}}</small></td>
+					<td><a href="/group/{{topic.creator.group.url_number}}/">{{topic.creator.group.name}}</a></td>
+				</tr>
+				{%endfor%}
+			</tbody>
+		</table>
+	{%else%}
+		<h2>没有话题</h2>
+	{%endif%}
+</div>
+{%endblock%}

@@ -1,0 +1,55 @@
+{%extends "sitemail/sitemail_base.html"%}
+{%block title%}{{mail.title}}{%endblock%}
+
+{%block box%}
+<div class="row-fluid">
+	{%for creator in mail.creator%}
+	{%if forloop.first%}
+	<div class="span2">
+	<a class="pull-left" href="/people/{{creator.user.url_number}}/"> <img class="img-polaroid span10" src="{{creator.user.public_profile.face}}"></a>
+	</div>
+	<div class="span10 removemarginleft" id="handle_topic">
+		<h3 class="media-heading">{{mail.title}}
+		</h3>
+		{%if mail.title == "入社申请"%}
+			
+		{%endif%}
+		<a href="/people/{{creator.user.url_number}}/">{{creator.user.public_profile.realname}}</a><small class="muted">&nbsp;&nbsp;&nbsp;{{mail.creat_time|date:"Y-m-d H:i:s"}}</small>	
+		<p>{{mail.content|linebreaksbr}}</p>
+	</div>
+	{%endif%}
+	{%endfor%}
+</div>
+
+<div class="row-fluid">
+	{%for reply in mail.get_reply%}
+	<div class="row-fluid">
+		<hr>
+		<a href="/people/{{reply.creator.user.url_number}}/"><div class="span2"><img class="img-polaroid offset2 span8" src="{{reply.creator.user.public_profile.face}}"></div></a>
+		<div class="media-body span10 removemarginleft">
+			<a class="media-heading" href="/people/{{reply.creator.user.url_number}}/">{{reply.creator.user.public_profile.realname}}</a>
+			<span class="muted" style="float: right;height: 16px;"><small>{{reply.creat_time|date:"Y-m-d H:i:s"}}</small></span>
+			<p>{{reply.content|linebreaksbr}}</p>
+		</div>
+	</div>
+	{%endfor%}
+	
+</div>
+<div class="row-fluid">
+	<hr>
+</div>
+
+
+<div class="row-fluid">
+	<div class="span12" id="reply">
+			<a href="/people/{{current_user.url_number}}/"><div class="span2"><img class="img-polaroid offset2 span8" src="{{current_user.public_profile.face}}"></div></a>
+			<form method="post" class="span8 removemarginleft">
+				{% csrf_token %}
+				<label for="id_content">回应:</label>
+				<textarea id="id_content" rows="10" cols="40" name="content" class="span12" style="height: 100px;resize:none"></textarea>
+				<button type="submit" class="btn btn-primary pull-right">发布</button>
+				<input type="hidden" name="reply"/>
+			</form>
+	</div>
+</div>
+{%endblock%}

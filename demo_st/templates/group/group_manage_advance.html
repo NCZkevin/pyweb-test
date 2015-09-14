@@ -1,0 +1,24 @@
+{%extends "group/group_manage.html"%}
+{%block othercss%}
+<link href="{{STATIC_URL}}css/bootstrap-fileupload.css" rel="stylesheet"/>
+{%endblock%}
+{%block tab_nav%}
+	<li>
+		<a href="../manage_edit/">资料编辑</a>
+	</li>
+	<li>
+		<a href="../manage_members/">成员管理</a>
+	</li>
+	<li class="active">
+		<a href="../manage_advance/">高级设定</a>
+	</li>
+{%endblock%}
+
+{%block manage_content%}
+<div class="span9">
+	
+</div>
+{%endblock%}
+{%block otherscript%}
+<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap-fileupload.js"></script>
+{%endblock%}

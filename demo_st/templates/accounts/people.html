@@ -1,0 +1,93 @@
+{%extends 'accounts/accounts_base.html'%}
+{%block title%}{{student}}的首页{%endblock%}
+
+{%block leftspan6%}
+<h4>{{student.public_profile.realname}}</h4>
+<hr>
+<ul class="nav nav-tabs" id="myTab">
+	{%block tab%}
+
+	{%endblock%}
+</ul>
+
+{%block content%}
+{%endblock%}
+
+{%endblock%}
+
+{%block rightspan3%}
+<div class="row-fluid">	
+		<div class="thumbnail">
+			<img src="{{student.public_profile.face}}">
+			<div id="outer">
+				<div id="watch_button">
+					{%ifnotequal student current_user%}
+					&nbsp;
+					{%endifnotequal%}
+					{%if student in current_user.get_watchpeople%}
+
+					<button class="btn btn-block btn-danger" id="cancle_watch">
+						取消关注
+					</button>
+					{%else%}
+
+					{%ifnotequal student current_user%}
+					<button class="btn btn-block btn-success" id="watch">
+						关注
+					</button>
+
+					{%endifnotequal%}
+					{%endif%}
+				</div>
+				
+			</div>
+		</div>
+</div>
+
+	<div class="row-fluid">
+		<div class="span12">
+		</div>
+		<table class="table">
+			<tbody>
+				<tr>
+					<td>姓名：</td>
+					<td>{{student.public_profile.realname}}</td>
+				</tr>
+				<tr>
+					<td>性别：</td>
+					<td>{{student.public_profile.gender}}</td>
+				</tr>
+				<tr>
+					<td>生日：</td>
+					<td>{{student.public_profile.birthday|date:"m/d/Y"}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+{%endblock%}
+{%block otherscript%}
+<script type="text/javascript" src="{{STATIC_URL}}js/csrf.js"></script>
+
+<script type="text/javascript">
+$().ready(function(){
+	$('#cancle_watch').live('click',function cancle_watch () {
+		$.post("{%url accounts.views.cancle_watch_student student.url_number%}",
+		function () {
+			$('#outer').load(location.href+' #watch_button');
+		});
+	});
+	
+	$('#watch').live('click',function watch () {
+		$.post("{%url accounts.views.add_watch_student student.url_number%}",
+		function () {
+			$('#outer').load(location.href+' #watch_button');
+			
+		});
+	});
+	
+});
+</script>
+					
+
+{%endblock%}

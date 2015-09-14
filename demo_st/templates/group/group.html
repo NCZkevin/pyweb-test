@@ -1,0 +1,92 @@
+{%extends "group/group_base.html"%}
+{%block leftspan6%}
+<h3>{{group.name}}<small>创建于{{group.birthday|date:"Y-m-d H:i:s"}}</small></h3>
+
+&nbsp;
+<div class="alert alert-success">
+	<div id="ask_outer" class="span4 pull-right">
+		{%block creat_topic%}
+		{%if current_user in group.get_user_active%}
+			
+			<a class="pull-right" data-toggle="modal" data-target="#myModal" href="">
+				 - 发布话题
+			</a>
+			
+			{%if current_user in group.get_user_not_admin%}
+				<a class="pull-right" id="ask_for_admin" href="">
+					 - 申请管理权 
+				</a>
+			{%else%}
+				<a class="pull-right" href="manage_edit/"> - 小组管理  </a>
+				<a class="pull-right" href="topic_inactive/"> - 话题回收站 </a>
+			{%endif%}
+		{%endif%}
+		{%endblock%}
+	</div>
+	简介：<br />
+	<p>{{group.introduction|linebreaksbr}}</p>
+</div>
+<ul class="nav nav-tabs" id="myTab">
+	{%block tab%}
+	<li class="active">
+		<a href="">小组话题</a>
+	</li>
+	<li>
+		<a href="structure/">小组人员</a>
+	</li>
+	{%endblock%}
+</ul>
+{%block content%}
+{%if group.get_topic_active%}
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<td>话题</td>
+			<td>回应/阅</td>
+			<td>最后回应</td>
+			<td>作者</td>
+		</tr>
+	</thead>
+	<tbody>
+		{%for topic in group.get_topic_active reversed%}
+		<tr>
+			<td><a title="{{topic.title}}" href="/group/{{group.url_number}}/topic/{{topic.url_number}}/">
+				{%if topic.is_top%}
+					<span class="label label-success">顶</span>
+				{%endif%}{{topic.title}}
+			</a></td>
+			<td>{{topic.get_reply.count}}/{{topic.clicks}}</td>
+			<td><small>{{topic.update_time|date:"Y-m-d H:i:s"}}</small></td>
+			<td><a href="/people/{{topic.creator.user.url_number}}/">{{topic.creator.user.public_profile.realname}}</a></td>
+		</tr>
+		{%endfor%}
+	</tbody>
+</table>
+{%else%}
+<div class="alert alert-error">
+	<p>没有话题</p>
+</div>
+{%endif%}
+{%endblock%}
+{%endblock%}
+
+{%block otherbody%}
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			×
+		</button>
+		<h3 id="myModalLabel">话题</h3>
+	</div>
+	<div class="modal-body" style="
+	margin-left: 120px;">
+		<form class="span3" method="post">
+			{% csrf_token %}
+			{{form.as_p}}
+			<button class="btn btn-primary" type="submit">
+				发布
+			</button>
+		</form>
+	</div>
+</div>
+{%endblock%}

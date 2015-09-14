@@ -1,0 +1,102 @@
+{%extends "group/group_manage.html"%}
+{%block tab_nav%}
+	<li>
+		<a href="../manage_edit/">资料编辑</a>
+	</li>
+	<li class="active">
+		<a href="../manage_members/">成员管理</a>
+	</li>
+	<li>
+		<a href="../manage_advance/">高级设定</a>
+	</li>
+{%endblock%}
+
+{%block manage_content%}
+<p style="color: green">小组管理员...</p>
+<hr>
+<div id="admins">
+	{%if group.get_user_admin%}
+	<ul class="thumbnails">
+		{%for user in group.get_user_admin%}
+		<li class="span4 {%cycle 'removemarginleft' '' ''%}">
+			<div class="span6">
+				<a href="/people/{{user.url_number}}/"> <img class="img-polaroid span10" src="{{user.public_profile.thumbnail}}"></a>
+			</div>
+			<div class="media-body">
+				<h4 class="media-heading">{{user.public_profile.realname}}</h4>
+				{%if group.get_user_admin.count > 1 and current_user != user%}
+				<button class="btn btn-mini" id="demote_{{user.url_number}}">贬为平民</button>
+				{%endif%}
+			</div>
+		</li>
+		{%endfor%}
+	</ul>
+	{%else%}
+	<h4>小组没有管理员。。。那你是怎么进来的！！</h4>
+	{%endif%}
+</div>
+<h2>&nbsp;</h2>
+<p style="color: green">小组成员...</p>
+<hr>
+<div id="members">
+	{%if group.get_user_not_admin%}
+	<ul class="thumbnails">
+		{%for user in group.get_user_not_admin%}
+		<li class="span4 {%cycle 'removemarginleft' '' ''%}">
+			<div class="span6">
+				<a href="/people/{{user.url_number}}/"> <img class="img-polaroid span10" src="{{user.public_profile.thumbnail}}"></a>
+			</div>
+			<div class="media-body">
+				<h4 class="media-heading">{{user.public_profile.realname}}</h4>
+				<button class="btn btn-mini" id="promote_{{user.url_number}}">提升为管理员</button>
+				<button class="btn btn-mini" id="kick_out_{{user.url_number}}">踢出小组</button>
+			</div>
+		</li>
+		{%endfor%}
+	</ul>
+	{%else%}
+	<h3>您的小组还没有成员</h3>
+	{%endif%}
+</div>
+{%endblock%}
+
+
+{%block otherscript%}
+<script type="text/javascript" src="{{STATIC_URL}}js/csrf.js"></script>
+<script type="text/javascript">
+$().ready(function(){
+	{%for user in group.get_member_list%}
+	$('#promote_{{user.url_number}}').live('click',function () {
+		$.post("{%url group.views.promote group.url_number user.url_number%}",
+		function () {
+			$('#members').load(location.href+' #members>*');
+			$('#admins').load(location.href+' #admins>*');
+			$('#admin_list').load(location.href+' #admin_list>*');
+			$('#member_list').load(location.href+' #member_list>*');
+		});
+	});
+	
+	$('#kick_out_{{user.url_number}}').live('click',function () {
+		$.post("{%url group.views.kick_out group.url_number user.url_number%}",
+		function () {
+			$('#members').load(location.href+' #members>*');
+			$('#admins').load(location.href+' #admins>*');
+			$('#admin_list').load(location.href+' #admin_list>*');
+			$('#member_list').load(location.href+' #member_list>*');
+		});
+	});
+	{%endfor%}
+	{%for user in group.get_admin_list%}
+	$('#demote_{{user.url_number}}').live('click',function () {
+		$.post("{%url group.views.demote group.url_number user.url_number%}",
+		function () {
+			$('#admins').load(location.href+' #admins>*');
+			$('#members').load(location.href+' #members>*');
+			$('#admin_list').load(location.href+' #admin_list>*');
+			$('#member_list').load(location.href+' #member_list>*');
+		});
+	});
+	{%endfor%}
+});
+</script>
+{%endblock%}

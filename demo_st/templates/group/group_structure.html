@@ -1,0 +1,60 @@
+{%extends "group/group.html"%}
+
+{%block creat_topic%}
+{%endblock%}
+
+{%block tab%}
+	<li>
+		<a href="../">小组话题</a>
+	</li>
+	<li class="active">
+		<a href="">小组人员</a>
+	</li>
+{%endblock%}
+
+{%block content%}
+		<div class="row-fluid">
+			<h4>小组管理员</h4>
+			<div class="row-fluid">
+				{%if group.get_user_admin%}
+					<ul class="thumbnails">
+						{%for user in group.get_user_admin%}
+						<li class="span4 {%cycle 'removemarginleft' '' ''%}">
+							<div class="span6">
+								<a href="/people/{{user.url_number}}/"> <img class="img-polaroid span10" src="{{user.public_profile.thumbnail}}"></a>
+							</div>
+							<div class="media-body">
+								<p class="media-heading">{{user.public_profile.realname}}</p>
+							</div>
+						</li>
+						{%endfor%}
+					</ul>
+				{%else%}
+					<div class="alert alert-error">
+						<h6>没有管理员</h6>
+					</div>
+				{%endif%}
+			</div>
+			<h4>小组成员</h4>
+			<div class="row-fluid">
+				{%if group.get_user_not_admin%}
+					<ul class="thumbnails">
+						{%for user in group.get_user_not_admin%}
+						<li class="span4 {%cycle 'removemarginleft' '' ''%}">
+							<div class="span6">
+								<a href="/people/{{user.url_number}}/"> <img class="img-polaroid span10" src="{{user.public_profile.thumbnail}}"></a>
+							</div>
+							<div class="media-body">
+								<p class="media-heading">{{user.public_profile.realname}}</p>
+							</div>
+						</li>
+						{%endfor%}
+					</ul>
+				{%else%}
+					<div class="alert alert-error">
+						<h6>没有成员</h6>
+					</div>
+				{%endif%}
+			</div>
+		</div>
+{%endblock%}

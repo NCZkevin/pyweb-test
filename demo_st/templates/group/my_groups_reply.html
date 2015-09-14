@@ -1,0 +1,38 @@
+{%extends "group/my_groups.html"%}
+{%block tabnav%}
+	<li>
+		<a href="../my_groups_news">最新话题</a>
+	</li>
+	<li>
+		<a href="../my_groups_creat">我发起的话题</a>
+	</li>
+	<li class="active">
+		<a href="../my_groups_reply">我回应的话题</a>
+	</li>
+{%endblock%}
+{%block table%}
+{%if current_user.get_topic_group_reply_active%}
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<td>话题</td>
+			<td>回应/阅</td>
+			<td>时间</td>
+			<td>小组</td>
+		</tr>
+	</thead>
+	<tbody>
+		{%for topic in current_user.get_topic_group_reply_active%}
+		<tr>
+			<td><a title="{{topic.title}}" href="/group/{{topic.creator.group.url_number}}/topic/{{topic.url_number}}/">{{topic.title}}</a></td>
+			<td>{{topic.get_reply.count}}/{{topic.clicks}}</td>
+			<td><small>{{topic.update_time|date:"Y-m-d H:i:s"}}</small></td>
+			<td><a href="/group/{{topic.creator.group.url_number}}/">{{topic.creator.group.name}}</a></td>
+		</tr>
+		{%endfor%}
+	</tbody>
+</table>
+{%else%}
+<h2>无</h2>
+{%endif%}
+{%endblock%}

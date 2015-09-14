@@ -1,0 +1,102 @@
+{%extends 'group/group_base.html'%}
+{%block leftspan6%}
+<div class="row-fluid">
+	<h4>我的小组话题</h4>
+	<hr>
+	<ul class="nav nav-tabs" id="myTab">
+		{%block tabnav%}
+		<li class="active">
+			<a href="../my_groups_news">最新话题</a>
+		</li>
+		<li>
+			<a href="../my_groups_creat">我发起的话题</a>
+		</li>
+		<li>
+			<a href="../my_groups_reply">我回应的话题</a>
+		</li>
+		{%endblock%}
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="home">
+			
+			{%block table%}
+			{%endblock%}
+			
+		</div>
+	</div>
+</div>
+{%endblock%}
+{%block rightspan3%}
+<div class="row-fluid">
+	<div class="span12">
+		<p align="left" style="color: green">
+			管理的小组...
+		</p>
+		{%if current_user.get_group_admin%}
+		<ul class="thumbnails row-fluid">
+			{%for group in current_user.get_group_admin%}
+				{%if forloop.counter <= 4%}
+			<li class="span3">
+				<a href="/group/{{group.url_number}}/"> <img src="{{group.thumbnail}}" class="img-polaroid span12"></a>
+			</li>
+				{%endif%}
+			{%endfor%}
+		</ul>
+		<ul class="thumbnails row-fluid">
+			{%for group in current_user.get_group_admin%}
+				{%if forloop.counter > 4 and forloop.counter <= 8%}
+			<li class="span3">
+				<a href="/group/{{group.url_number}}/"> <img src="{{group.thumbnail}}" class="img-polaroid span12"></a>
+			</li>
+				{%endif%}
+			{%endfor%}
+		</ul>
+		{%else%}
+		<div class="alert alert-error">
+			<p>
+				没有需要您管理的小组
+			</p>
+		</div>
+		{%endif%}
+		{%if current_user.get_admin_group.count >= 4%}
+		<a class="pull-right" href="/people/{{current_user.url_number}}/people/" style="color: green">>更多</a>
+		{%endif%}
+	</div>
+	<div class="row-fluid">
+		<p align="left" style="color: green">
+			参加的小组...
+		</p>
+		{%if current_user.get_group_not_admin%}
+		<ul class="thumbnails row-fluid">
+			{%for group in current_user.get_group_not_admin%}
+				{%if forloop.counter <= 4%}
+			<li class="span3">
+				<a href="/group/{{group.url_number}}/"> <img src="{{group.thumbnail}}" class="img-polaroid span12"></a>
+			</li>
+				{%endif%}		
+			{%endfor%}
+		</ul>
+		<ul class="thumbnails row-fluid">
+			{%for group in current_user.get_group_not_admin%}
+				{%if forloop.counter > 4 and forloop.counter <= 8%}
+			<li class="span3">
+				<a href="/group/{{group.url_number}}/"> <img src="{{group.thumbnail}}" class="img-polaroid span12"></a>
+			</li>
+				{%endif%}
+			{%endfor%}
+		</ul>
+		{%else%}
+		<div class="alert alert-error">
+		<p>
+			您还没有不需要管理的小组
+		</p>
+		</div>
+		{%endif%}
+		{%if current_user.get_in_group.count >= 4%}
+		<a class="pull-right" href="/people/{{current_user.url_number}}/people/" style="color: green">>更多</a>
+		{%endif%}
+	</div>
+</div>
+{%endblock%}
+{%block otherscript%}
+{%endblock%}

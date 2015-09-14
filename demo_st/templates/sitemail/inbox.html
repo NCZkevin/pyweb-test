@@ -1,0 +1,42 @@
+{%extends "sitemail/sitemail_base.html"%}
+{%block title%}收件箱{%endblock%}
+
+{%block box%}
+<h3>收件箱</h3>
+{%if current_user.get_inbox%}
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<td>标题</td>
+			<td>发件人</td>
+			<td>收件人</td>
+			<td>时间</td>
+		</tr>
+	</thead>
+	<tbody>
+		{%for mail in current_user.get_inbox%}
+		<tr>
+			{%if mail.is_readed%}
+			<td><a title="{{mail.title}}" href="/sitemail/{{mail.url_number}}/">{{mail.title}}</a></td>
+			{%else%}
+			<td><a title="{{mail.title}}" href="/sitemail/{{mail.url_number}}/"><h4>{{mail.title}}</h4></a></td>
+			{%endif%}
+			{%for creator in mail.creator%}
+				{%if forloop.first%}
+					<td><a href="/people/{{creator.user.url_number}}/">{{creator.user.public_profile.realname}}</a></td>
+				{%endif%}
+			{%endfor%}
+			<td>
+				{%for creator in mail.creator%}
+				<a href="/people/{{creator.target.url_number}}/">-{{creator.target.public_profile.realname}}</a>
+				{%endfor%}
+			</td>
+			<td><small>{{mail.creat_time|date:"Y-m-d H:i:s"}}</small></td>
+		</tr>
+		{%endfor%}
+	</tbody>
+</table>
+{%else%}
+<h2>无</h2>
+{%endif%}
+{%endblock%}

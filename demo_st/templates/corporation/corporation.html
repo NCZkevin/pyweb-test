@@ -1,0 +1,53 @@
+{%extends "corporation/corporation_base.html"%}
+{%block leftspan6%}
+<h3>{{corporation.name}}<small>创建于{{corporation.birthyear}}</small></h3>
+
+&nbsp;
+<div class="alert alert-success">
+	<div id="ask_outer" class="span6 pull-right">
+		{%if current_user in corporation.get_user_active%}
+			{%block topic_or_activity%}
+			{%endblock%}
+			{%if current_user in corporation.get_user_not_admin%}
+				<a class="pull-right" id="ask_for_admin" href=""> - 申请管理权</a>
+			{%else%}
+				<a class="pull-right" href="../topic_inactive/"> - 话题回收站</a>
+				<a class="pull-right" href="../manage_edit/"> - 社团管理 </a>
+			{%endif%}
+		{%else%}
+			<a class="pull-right" data-toggle="modal" data-target="#myAskModal" href=""> - 申请加入社团</a>
+		{%endif%}
+	</div>
+	简介：<br />
+	<p>{{corporation.introduction|linebreaksbr}}</p>
+</div>
+<ul class="nav nav-tabs" id="myTab">
+	{%block tab%}
+
+	{%endblock%}
+</ul>
+	{%block content%}
+	
+	{%endblock%}
+{%endblock%}
+{%block otherbody%}
+<div id="myAskModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			×
+		</button>
+		<h3 id="myModalLabel">入社申请</h3>
+	</div>
+	<div class="modal-body" style="
+	margin-left: 120px;">
+		<form class="span3" method="post">
+			{% csrf_token %}
+			{{form.as_p}}
+			<button class="btn btn-primary" type="submit">
+				提交
+			</button>
+		</form>
+	</div>
+</div>
+{%endblock%}
+

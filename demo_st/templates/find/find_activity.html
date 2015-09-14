@@ -1,0 +1,43 @@
+{%extends "find/find_base.html"%}
+{%block tab%}
+<li>
+	<a href="../corporation/">社团</a>
+</li>
+<li>
+	<a href="../group/">小组</a>
+</li>
+<li>
+	<a href="../topic/">话题</a>
+</li>
+<li class="active">
+	<a href="../activity/">活动</a>
+</li>
+{%endblock%}
+{%block box%}
+<div class="row-fluid">
+	{%if current_user.find_activity%}
+		{%for activity in current_user.find_activity reversed%}
+			<div class="media">
+				<div class="span2">
+					<div class="span8">
+						<a class="pull-left" href="/corporation/{{corporation.url_number}}/"><img class="img-polaroid" src="{{corporation.logo}}"></a>
+					</div>
+				</div>
+				<div class="broadcast right span10">
+					<div class="arrow"></div>
+					<div>
+						<h3  class="popover-title" href="/activity/{{activity.url_number}}/">{{activity.name}}
+						<span class="muted pull-right"><small>{{activity.creat_time|date:"Y-m-d H:i:s"}}</small></span>
+						</h3>
+						<div class="popover-content">
+							<p>{{broadcast.object.description}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		{%endfor%}
+	{%else%}
+	<h2>没有活动</h2>
+	{%endif%}
+</div>
+{%endblock%}

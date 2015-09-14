@@ -1,0 +1,60 @@
+{%extends "accounts/accounts_base.html"%}
+{%block othercss%}
+<link href="{{STATIC_URL}}css/bootstrap-fileupload.css" rel="stylesheet"/>
+<link href="{{STATIC_URL}}css/datepicker.css" rel="stylesheet"/>
+{%endblock%}
+{%block container%}
+<div class="row-fluid">
+	<div class="span8 offset2 well">
+		<form class="form-horizontal" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			<h3 class="success offset5" style="color:#3366FF;"><strong>个人资料</strong></h3>
+			<div class="row-fluid">
+				<div class="span6">
+					<div class="fileupload fileupload-new" data-provides="fileupload">						
+						<div class="row-fluid">
+							<div class="fileupload-preview thumbnail span11" style="height: 260px"></div>
+							<span class="btn btn-file"><span class="fileupload-new">选择图片</span><span class="fileupload-exists">换一张</span>
+								<input type="file" name="face" id="id_face"/>
+							</span>
+							<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">删除</a>
+						</div>
+					</div>
+				</div>
+				<div class="span6">
+					<div class="control-group">
+						<div class="span2 offset1">
+							<label class="pull-right" for="id_realname" style="color: green">真实姓名:</label>
+						</div>
+						<div class="span9">
+							<input type="text" id="id_realname" name="realname" placeholder="请输入真实姓名" value="{{current_user.public_profile.realname}}"/>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="span2 offset1">
+							<label class="pull-right" for="id_birthday" style="color: green">生日:</label>
+						</div>
+						<div class="span8">
+							<input type="text" id="id_birthday" name="birthday" value="{{current_user.public_profile.birthday|date:"m/d/Y"}}"/>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="offset7">
+							<button class="btn btn-success offset1" type="submit">
+								保存
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+{%endblock%}
+{%block otherscript%}
+<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap-fileupload.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">$('#id_birthday').datepicker()</script>
+{%endblock%}

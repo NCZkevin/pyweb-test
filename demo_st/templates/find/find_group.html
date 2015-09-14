@@ -1,0 +1,36 @@
+{%extends "find/find_base.html"%}
+{%block tab%}
+<li>
+	<a href="../corporation/">社团</a>
+</li>
+<li class="active">
+	<a href="../group/">小组</a>
+</li>
+<li>
+	<a href="../topic/">话题</a>
+</li>
+<li>
+	<a href="../activity/">活动</a>
+</li>
+{%endblock%}
+{%block box%}
+<div class="row-fluid">
+	{%if current_user.find_group%}
+<ul class="thumbnails">
+	{%for sgcard in current_user.find_group%}
+	<li class="span4 {%cycle 'removemarginleft' '' ''%}">
+		<div class="span6">
+		<a class="" href="/group/{{sgcard.group.url_number}}/"> <img class="img-polaroid span10" src="{{sgcard.group.thumbnail}}"></a>
+		</div>
+		<div class="media-body">
+			<h4 class="media-heading">{{sgcard.group.name}}</h4>
+			<p>{{sgcard.group.get_user_active.count}}个成员</p>
+		</div>
+	</li>
+	{%endfor%}
+</ul>
+{%else%}
+<h2>没有小组</h2>
+{%endif%}
+</div>
+{%endblock%}

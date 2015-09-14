@@ -1,0 +1,50 @@
+{%extends "corporation/corporation_base.html"%}
+{%block leftspan6%}
+<h4>话题回收站</h4>
+<div id="inactive_topic">
+	{%if current_user in corporation.get_user_admin%}
+	<div class="row-fluid">
+		<div>
+			<div class="pull-right">
+				<button class="btn btn-link">
+					-全部恢复
+				</button>
+				<button class="btn btn-link">
+					-全部删除
+				</button>
+			</div>
+		</div>
+	</div>
+	<hr class="row-fluid">
+
+	{%if corporation.get_topic_inactive%}
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<td>话题</td>
+				<td>回应/阅</td>
+				<td>最后回应</td>
+				<td>作者</td>
+			</tr>
+		</thead>
+
+		<tbody>
+			{%for topic in corporation.get_topic_inactive%}
+			<tr>
+				<td><a title="{{topic.title}}" href="/corporation/{{corporation.url_number}}/topic/{{topic.url_number}}/">{{topic.title}}</a></td>
+				<td>{{topic.get_reply.count}}/{{topic.clicks}}</td>
+				<td>{{topic.update_time|date:"Y-m-d H:i:s"}}</td>
+				<td><a href="/people/{{topic.creator.user.url_number}}/">{{topic.creator.user.public_profile.realname}}</a></td>
+			</tr>
+			{%endfor%}
+		</tbody>
+
+	</table>
+	{%else%}
+	<div class="row-fluid">
+		<h3>回收站没有话题</h3>
+	</div>
+	{%endif%}
+	{%endif%}
+</div>
+{%endblock%}

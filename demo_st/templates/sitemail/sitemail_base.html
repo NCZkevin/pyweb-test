@@ -1,0 +1,27 @@
+{%extends "base.html"%}
+{%block title%}站内信{%endblock%}
+{%block nav%}
+<li>
+	<a href="/">广播</a>
+</li>
+<li>
+	<a href="/people/{{current_user.url_number}}/">个人主页</a>
+</li>
+<li>
+	<a href="/corporation/my_corporations_news/">社团</a>
+</li>
+<li>
+	<a href="/group/my_groups_news/">小组</a>
+</li>
+<li>
+	<a href="/find/">发现</a>
+</li>
+{%endblock%}
+{%block container%}
+<div class="row-fluid">
+	<div class="span8 offset2 well">
+		{%block box%}
+		{%endblock%}
+	</div>
+</div>
+{%endblock%}

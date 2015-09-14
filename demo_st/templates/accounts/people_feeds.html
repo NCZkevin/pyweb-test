@@ -1,0 +1,42 @@
+{%extends "accounts/people.html"%}
+
+{%block tab%}
+<li class="active">
+	<a href="../feeds/">动态</a>
+</li>
+<li>
+	<a href="../corporation/">社团</a>
+</li>
+<li>
+	<a href="../group/">小组</a>
+</li>
+{%endblock%}
+
+{%block content%}
+	{%if student.mybroadcast%}
+	<div class="media row-fluid">
+		{%for broadcast in student.mybroadcast reversed%}
+		<div class="media">
+			<div class="span2">
+				<a class="pull-left span8" href="/people/{{student.url_number}}/"><img class="img-polaroid" src="{{student.public_profile.face}}"></a>
+			</div>
+			<div class="broadcast right span10">
+				<div class="arrow"></div>
+				<div>
+					<h3  class="popover-title" href="/people/{{student.url_number}}/">{{student.public_profile.realname}}
+					<span class="muted pull-right"><small>{{broadcast.object.creat_time|date:"Y-m-d H:i:s"}}</small></span>
+					</h3>
+					<div class="popover-content">
+						<p>{{broadcast.object.description}}</p>
+					</div>	
+				</div>
+			</div>	
+		</div>
+		{%endfor%}
+	</div>
+	{%else%}
+	<div class="alert alert-error">
+		<p>没有关于他的消息</p>
+	</div>
+	{%endif%}
+{%endblock%}

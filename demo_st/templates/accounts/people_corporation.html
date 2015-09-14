@@ -1,0 +1,31 @@
+{%extends "accounts/people.html"%}
+{%block tab%}
+<li>
+	<a href="../">动态</a>
+</li>
+<li class="active">
+	<a href="../corporation/">社团</a>
+</li>
+<li>
+	<a href="../group/">小组</a>
+</li>
+{%endblock%}
+{%block content%}
+{%if student.get_corporation_active%}
+<ul class="thumbnails">
+	{%for corporation in student.get_corporation_active%}
+	<li class="span4 {%cycle 'removemarginleft' '' ''%}">
+		<div class="span6">
+		<a class="" href="/corporation/{{corporation.url_number}}/"> <img class="img-polaroid span10" src="{{corporation.thumbnail}}"></a>
+		</div>
+		<div class="media-body">
+			<h4 class="media-heading">{{corporation.name}}</h4>
+			<p>{{corporation.get_user_active.count}}个成员</p>
+		</div>
+	</li>
+	{%endfor%}
+</ul>
+{%else%}
+<h2>他还没有加入社团</h2>
+{%endif%}
+{%endblock%}

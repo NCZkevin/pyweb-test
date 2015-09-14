@@ -1,0 +1,67 @@
+{%extends "group/group_base.html"%}
+{%block othercss%}
+<link href="{{STATIC_URL}}css/bootstrap-fileupload.css" rel="stylesheet"/>
+{%endblock%}
+{%block container%}
+<div class="row-fluid">
+<div class="span8 offset2 well">
+	<form class="form-horizontal" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<h3 class="success offset5" style="color:#3366FF;"><strong>创建小组</strong></h3>
+		<div class="row-fluid">
+			<div class="span6">
+				<div class="fileupload fileupload-new" data-provides="fileupload">
+					<div class="row-fluid">
+						<div class="fileupload-preview thumbnail span11" style="height: 288px"></div>
+						<div class="btn btn-file">
+							<div class="fileupload-new">选择小组Logo</div>
+							<div class="fileupload-exists">换一张</div>
+							<input type="file" name="logo" id="id_logo"/>
+						</div>
+						<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">删除</a>
+					</div>
+				</div>
+			</div>
+			<div class="span6">
+				<div class="control-group span12">
+					
+					<label class="span3" for="id_name" style="color: green">小组名称:</label>
+					<div class="span8">
+						<input type="text" id="id_name" name="name" placeholder="请输入小组名称"/ class="span10">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="span3" for="id_introduction" style="color: green">小组简介:</label>
+					<div class="span8">
+						<input type="text" id="id_introduction" name="introduction"/ class="span10">
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="row-fluid">
+						<div class="span3">
+							<span style="color: green">小组类型:</span>&nbsp;
+						</div>
+						<div class="span8">
+							<input type="radio" name="grouptype" id="public" value="公开小组" checked style="margin-top: 0px">公开小组</input>&nbsp;&nbsp;
+							<input type="radio" name="grouptype" id="private" value="私密小组" style="margin-top: 0px">私密小组</input>
+						</div>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<div class="offset7">
+						<button class="btn btn-success offset2" type="submit">
+							保存
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+{%endblock%}
+{%block otherscript%}
+<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap-fileupload.js"></script>
+{%endblock%}

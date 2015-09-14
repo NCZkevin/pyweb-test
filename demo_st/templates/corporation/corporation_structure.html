@@ -1,0 +1,50 @@
+{%extends "corporation/corporation.html"%}
+
+{%block tab%}
+	<li class="active">
+		<a href="../structure/">社团结构</a>
+	</li>
+	{%if current_user in corporation.get_user_active%}
+		<li>
+			<a href="../topics/">社内论坛</a>
+		</li>
+	{%endif%}
+	<li>
+		<a href="../activity/">社团活动</a>
+	</li>
+	
+{%endblock%}
+
+{%block content%}
+{%if corporation.departments%}
+	{%for department in corporation.departments%}
+		<div class="row-fluid">
+			<h4>{{department}}:</h4>
+			<div class="row-fluid">
+				{%if department%}
+					<ul class="thumbnails">
+						{%for sccard in corporation.get_sccard_active%}
+						{%if sccard.department == department%}
+						<li class="span4 {%cycle 'removemarginleft' '' ''%}">
+							<div class="span6">
+								<a href="/people/{{sccard.user.url_number}}/"> <img class="img-polaroid span10" src="{{sccard.user.public_profile.thumbnail}}"></a>
+							</div>
+							<div class="media-body">
+								<h4 class="media-heading">{{sccard.user.public_profile.realname}}</h4>
+							</div>
+						</li>
+						{%endif%}
+						{%endfor%}
+					</ul>
+				{%else%}
+					<div class="alert alert-error">
+						<h6>该部门没有成员</h6>
+					</div>
+				{%endif%}
+			</div>
+		</div>
+	{%endfor%}
+{%else%}
+<div class="alert alert-error"><h6>该社团还没有创建部门</h6></div>
+{%endif%}
+{%endblock%}
